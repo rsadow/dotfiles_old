@@ -1,0 +1,4 @@
+###################
+## Key Bindings
+###################
+bind r source-file ~/.tmux.conf \; display "Config reloaded"
