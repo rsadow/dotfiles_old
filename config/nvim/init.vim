@@ -6,7 +6,8 @@ Plug 'tmux-plugins/vim-tmux'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'bling/vim-airline'
 Plug 'tpope/vim-fugitive'
-"Plug 'szw/vim-ctrlspace'
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'Shougo/unite.vim'
 call plug#end()
 
 "
@@ -20,15 +21,60 @@ set shiftround
 set autoindent
 set smartindent
 
-"set encoding=utf-8
 set t_Co=256
+hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
 "
 " KEY BINDINGS
 "
-"
+
+let mapleader="\<Space>"
+nnoremap <Leader>fe :so $MYVIMRC<CR>
 "
 " PLUGINS
+"
 
-let g:airline_powerline_fonts=1
-let g:airline_left_sep=''
-let g:airline_right_sep=''
+"" Airline
+nnoremap <Leader>p :Unite -start-insert file_rec<CR>
+let g:airline_mode_map = {
+      \ '__' : '-',
+      \ 'n'  : 'N',
+      \ 'i'  : 'I',
+      \ 'R'  : 'R',
+      \ 'c'  : 'C',
+      \ 'v'  : 'V',
+      \ 'V'  : 'V',
+      \ '' : 'V',
+      \ 's'  : 'S',
+      \ 'S'  : 'S',
+      \ '' : 'S',
+      \ }
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
+
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.branch = '⎇ '
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+let g:airline_theme='distinguished'
+"let g:airline_powerline_fonts=1
+"let g:airline_left_sep=''
+"let g:airline_right_sep=''
+
+
+"" Unite
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#custom#profile('default', 'context', {
+    \   'start_insert': 1,
+    \   'winheight': 20,
+    \   'direction': 'botright',
+    \   'prompt': '➤ ',
+    \ })
+nnoremap <Leader>p :Unite -start-insert file_rec<CR>
+nnoremap <Leader>b :Unite -start-insert buffer<CR>
+
