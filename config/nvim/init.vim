@@ -8,6 +8,7 @@ Plug 'bling/vim-airline'
 Plug 'tpope/vim-fugitive'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Shougo/unite.vim'
+Plug 'lyuts/vim-rtags'
 call plug#end()
 
 "
@@ -28,7 +29,10 @@ hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
 "
 
 let mapleader="\<Space>"
-nnoremap <Leader>fe :so $MYVIMRC<CR>
+
+nnoremap <silent> <Leader>fe :so $MYVIMRC<CR>
+
+nnoremap <silent> <Esc><Esc> :let @/=""<CR>
 "
 " PLUGINS
 "
@@ -69,12 +73,14 @@ let g:airline_theme='distinguished'
 
 "" Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_length'])
 call unite#custom#profile('default', 'context', {
     \   'start_insert': 1,
     \   'winheight': 20,
     \   'direction': 'botright',
-    \   'prompt': '➤ ',
+    \   'prompt': '❯ ',
+    \   'prompt_direction': 'top',
     \ })
-nnoremap <Leader>p :Unite -start-insert file_rec<CR>
+nnoremap <Leader>p :Unite -start-insert file_rec/neovim<CR>
 nnoremap <Leader>b :Unite -start-insert buffer<CR>
-
+highlight NonText ctermfg=4
