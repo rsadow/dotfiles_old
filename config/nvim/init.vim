@@ -8,7 +8,11 @@ Plug 'bling/vim-airline'
 Plug 'tpope/vim-fugitive'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimproc.vim'
 Plug 'lyuts/vim-rtags'
+Plug 'gustafj/vim-ttcn'
+Plug 'scrooloose/nerdcommenter'
+Plug 'dbakker/vim-projectroot'
 call plug#end()
 
 "
@@ -30,8 +34,8 @@ hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
 
 let mapleader="\<Space>"
 
-nnoremap <silent> <Leader>fe :so $MYVIMRC<CR>
-
+nnoremap <silent> <Leader>fe :so $MYVIMRC<CR> 
+nnoremap ; :
 nnoremap <silent> <Esc><Esc> :let @/=""<CR>
 "
 " PLUGINS
@@ -66,21 +70,46 @@ let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 let g:airline_theme='distinguished'
-"let g:airline_powerline_fonts=1
-"let g:airline_left_sep=''
-"let g:airline_right_sep=''
-
 
 "" Unite
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_length'])
+"call unite#filters#matcher_default#use(['matcher_fuzzy'])
+"call unite#filters#sorter_default#useter_length'])
 call unite#custom#profile('default', 'context', {
     \   'start_insert': 1,
-    \   'winheight': 20,
+    \   'winheight': 10,
     \   'direction': 'botright',
-    \   'prompt': '❯ ',
+    \   'prompt': '→ ',
     \   'prompt_direction': 'top',
+   \    'no_resize': 1,
     \ })
-nnoremap <Leader>p :Unite -start-insert file_rec/neovim<CR>
-nnoremap <Leader>b :Unite -start-insert buffer<CR>
-highlight NonText ctermfg=4
+
+function! Unite_projectroot()
+    execute ':Unite -start-insert file_rec/async:'.ProjectRootGuess().'/'
+endfunction
+
+let g:unite_source_rec_async_command = 
+    \ ['ag', '--follow', '--nocolor', '--nogroup',
+    \ '--hidden', '--ignore-dir', 'bin', '-g', '']
+
+"nnoremap <Leader>pf :call Unite_projectroot()<CR>
+"nnoremap <Leader>pb :Unite -start-insert buffer<CR>
+highlight NonText ctermfg=0
+
+"
+" CTRLP
+"
+"
+nnoremap <Leader>bo :CtrlP<CR>
+nnoremap <Leader>bb :CtrlPBuffer<CR>
+nnoremap <Leader>br :CtrlPMRUFiles<CR>
+let g:ctrlp_lazy_update = 250
+let g:ctrlp_max_files = 60000
+let g:ctrlp_clear_cache_on_exit=0
+let g:ctrlp_custom_ignore = {
+    \ 'dir': '\v[\/]\.?(git|svn|bin)$',
+    \ 'file': '\v\.(o|zip|so|a|gz|java|py)$'
+    \}
+
+hi CtrlPLinePre ctermfg=8
+hi CtrlPNoEntries ctermbg=NONE
+hi CtrlPMatch ctermfg=2
