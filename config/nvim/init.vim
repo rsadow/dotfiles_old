@@ -16,6 +16,7 @@ Plug 'dbakker/vim-projectroot'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'rking/ag.vim'
 Plug 'tomtom/tcomment_vim'
+Plug 'whatyouhide/vim-gotham' 
 call plug#end()
 
 " FUNCTIONS = {{
@@ -24,6 +25,7 @@ augroup reload_vimrc " {
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
+au BufRead,BufNewFile *.ttcn3 setf ttcn
 
 " }}
 
@@ -36,8 +38,8 @@ set shiftround
 set autoindent
 set smartindent
 
-set t_Co=256
-
+set t_Co=16
+colorscheme gotham
 "" }}
 
 "" COLORS = {{
@@ -53,14 +55,12 @@ hi NonText ctermfg=0
 let mapleader="\<Space>"
 nnoremap ; :
 nnoremap <silent> <Esc><Esc> :let @/=""<CR>
-
 " }}
 "
 
 " PLUGINS = {{
 
 "" Airline = {
-nnoremap <Leader>p :Unite -start-insert file_rec<CR>
 let g:airline_mode_map = {
       \ '__' : '-',
       \ 'n'  : 'N',
@@ -87,7 +87,7 @@ let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
-let g:airline_theme='distinguished'
+let g:airline_theme='gotham'
 
 "" }
 
@@ -103,7 +103,9 @@ call unite#custom#profile('default', 'context', {
     \   'prompt_direction': 'top',
    \    'no_resize': 1,
     \ })
-
+let g:unite_redraw_hold_candidates = 50000
+call unite#custom#source('file_rec/neovim', 'matchers',
+    \ ['converter_relative_word', 'matcher_fuzyy'])
 let g:unite_source_rec_async_command = 
     \ ['ag', '--follow', '--nocolor', '--nogroup',
     \ '--hidden', '--ignore-dir', 'bin', '-g', '']
@@ -113,9 +115,9 @@ let g:unite_source_rec_async_command =
 
 " CTRLP = {
 
-nnoremap <Leader>bo :CtrlP<CR>
-nnoremap <Leader>bb :CtrlPBuffer<CR>
-nnoremap <Leader>br :CtrlPMRUFiles<CR>
+nnoremap <Leader>pf :CtrlP<CR>
+nnoremap <Leader>pb :CtrlPBuffer<CR>
+nnoremap <Leader>pr :CtrlPMRUFiles<CR>
 "let g:ctrlp_lazy_update = 250
 let g:ctrlp_max_files = 60000
 let g:ctrlp_clear_cache_on_exit=0
@@ -131,7 +133,7 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .hg
       \ --ignore .DS_Store
       \ --ignore bin
-      \ --ignore "**/*.pyc"
+      \ --ignore "**/*.java"
       \ -g ""'
 
 hi CtrlPLinePre ctermfg=8
