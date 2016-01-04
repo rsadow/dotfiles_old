@@ -6,7 +6,7 @@ Plug 'tmux-plugins/vim-tmux'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'bling/vim-airline'
 Plug 'tpope/vim-fugitive'
-Plug 'octol/vim-cpp-enhanced-highlight'
+" Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim'
 Plug 'lyuts/vim-rtags'
@@ -16,7 +16,18 @@ Plug 'dbakker/vim-projectroot'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'rking/ag.vim'
 Plug 'tomtom/tcomment_vim'
-Plug 'whatyouhide/vim-gotham' 
+Plug 'whatyouhide/vim-gotham'
+Plug 'morhetz/gruvbox'
+Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'cocopon/iceberg.vim'
+Plug 'jdkanani/vim-material-theme'
+Plug 'Valloric/YouCompleteMe'
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+Plug 'altercation/vim-colors-solarized'
+Plug 'freeo/vim-kalisi'
+" Plug 'bbchung/clighter'
+Plug 'bbchung/Clamp'
+" Plug 'mhinz/vim-signify'
 call plug#end()
 
 " FUNCTIONS = {{
@@ -31,21 +42,22 @@ au BufRead,BufNewFile *.ttcn3 setf ttcn
 
 " GENERALS = {{
 "
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set hidden
 syntax on
 set shiftwidth=4
 set shiftround
 set autoindent
 set smartindent
-
-set t_Co=16
-colorscheme gotham
+set t_Co=256
+set background=dark
+colorscheme gruvbox
 "" }}
 
 "" COLORS = {{
 
 hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
-hi NonText ctermfg=0
+" hi NonText ctermfg=0
 
 " }}
 
@@ -87,7 +99,7 @@ let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
-let g:airline_theme='gotham'
+let g:airline_theme='gruvbox'
 
 "" }
 
@@ -103,7 +115,7 @@ call unite#custom#profile('default', 'context', {
     \   'prompt_direction': 'top',
    \    'no_resize': 1,
     \ })
-let g:unite_redraw_hold_candidates = 50000
+let g:unite_redraw_hold_candidates = 20000
 call unite#custom#source('file_rec/neovim', 'matchers',
     \ ['converter_relative_word', 'matcher_fuzyy'])
 let g:unite_source_rec_async_command = 
@@ -134,7 +146,7 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .DS_Store
       \ --ignore bin
       \ --ignore "**/*.java"
-      \ -g ""'
+      \ -g "" '
 
 hi CtrlPLinePre ctermfg=8
 hi CtrlPNoEntries ctermbg=NONE
@@ -142,9 +154,18 @@ hi CtrlPNoEntries ctermbg=NONE
 "" }
 
 "" Ag = {
-
 let g:ag_working_path_mode="r"
 
 ""}
 
+let g:gruvbox_contrast_dark="medium"
+
 " }}
+"
+"
+let &t_ZH="\e[3m"
+let &t_ZR="\e[23m"
+let g:gruvbox_italicize_strings=1
+let g:cpp_class_scope_highlight=1
+let g:gruvbox_italicize_comments=1
+highlight Comment cterm=italic
