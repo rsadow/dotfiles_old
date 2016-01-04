@@ -16,22 +16,26 @@ Plug 'dbakker/vim-projectroot'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'rking/ag.vim'
 Plug 'tomtom/tcomment_vim'
-Plug 'whatyouhide/vim-gotham'
 Plug 'morhetz/gruvbox'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'cocopon/iceberg.vim'
 Plug 'jdkanani/vim-material-theme'
-Plug 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'altercation/vim-colors-solarized'
-Plug 'freeo/vim-kalisi'
+Plug 'juneedahamed/vc.vim'
+Plug 'vim-scripts/vcscommand.vim'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-reload'
+Plug 'Shougo/deoplete.nvim'
+Plug 'Raimondi/delimitMate'
 " Plug 'bbchung/clighter'
-Plug 'bbchung/Clamp'
+" Plug 'bbchung/Clamp'
 " Plug 'mhinz/vim-signify'
 call plug#end()
 
 " FUNCTIONS = {{
-
+let g:python3_host_prog = '/opt/python/x86_64/3.4.1/bin/python3'
 augroup reload_vimrc " {
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
@@ -43,15 +47,18 @@ au BufRead,BufNewFile *.ttcn3 setf ttcn
 " GENERALS = {{
 "
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set hidden
 syntax on
 set shiftwidth=4
 set shiftround
 set autoindent
 set smartindent
+set number
 set t_Co=256
 set background=dark
 colorscheme gruvbox
+set fillchars+=vert:\ 
 "" }}
 
 "" COLORS = {{
@@ -100,7 +107,10 @@ let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 let g:airline_theme='gruvbox'
-
+let g:airline#extensions#whitespace#enabled=0
+let g:airline#extensions#branch#use_vcscommand=1
+let g:airline_section_y = '%{projectroot#guess()}' 
+let g:airline_section_c = "%{expand('%:t')}%m" 
 "" }
 
 "" Unite = {
@@ -123,9 +133,7 @@ let g:unite_source_rec_async_command =
     \ '--hidden', '--ignore-dir', 'bin', '-g', '']
 
 "" }
-
-
-" CTRLP = {
+"" Plugin: CTRLP {
 
 nnoremap <Leader>pf :CtrlP<CR>
 nnoremap <Leader>pb :CtrlPBuffer<CR>
@@ -145,27 +153,50 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .hg
       \ --ignore .DS_Store
       \ --ignore bin
-      \ --ignore "**/*.java"
+      \ --ignore *.so*
+      \ --ignore *.java
       \ -g "" '
 
 hi CtrlPLinePre ctermfg=8
 hi CtrlPNoEntries ctermbg=NONE
 
 "" }
-
-"" Ag = {
-let g:ag_working_path_mode="r"
-
-""}
+"" Plugin: Ag = {
+let g:ag_prg='ag --vimgrep 
+    \ --ignore-dir CMakeFiles'
+nnoremap <Leader>/ :Ag <cword><CR>
+let g:ag_highlight=1
+"" }
+"" Plugin: Gruvbox {
 
 let g:gruvbox_contrast_dark="medium"
-
-" }}
-"
-"
-let &t_ZH="\e[3m"
-let &t_ZR="\e[23m"
 let g:gruvbox_italicize_strings=1
 let g:cpp_class_scope_highlight=1
-let g:gruvbox_italicize_comments=1
-highlight Comment cterm=italic
+let g:gruvbox_italicize_comments=1 
+"" }
+"" Plugin: vim-reload {
+
+let g:reload_on_write=0
+
+"" }
+"" Plugin:: ProjectRoot {
+function! <SID>AutoProjectRootCD()
+    try
+	if &ft != 'help'
+	    ProjectRootCD
+	endif
+    catch
+    endtry
+endfunction
+
+autocmd BufEnter * call <SID>AutoProjectRootCD()
+"" }
+"" Plugin: deoplete {
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+let g:deoplete#enable_at_startup = 1
+"" }
+"" Plugin: delimitMate {
+let delimitMate_expand_cr = 1
+let delimitMate_jump_expansion = 1
+"" }
+" }}
