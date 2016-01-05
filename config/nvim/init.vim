@@ -11,7 +11,6 @@ Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim'
 Plug 'lyuts/vim-rtags'
 Plug 'gustafj/vim-ttcn'
-"Plug 'scrooloose/nerdcommenter'
 Plug 'dbakker/vim-projectroot'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'rking/ag.vim'
@@ -28,14 +27,20 @@ Plug 'vim-scripts/vcscommand.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-reload'
 Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/neco-vim'
 Plug 'Raimondi/delimitMate'
+Plug 'mhinz/vim-startify'
 " Plug 'bbchung/clighter'
 " Plug 'bbchung/Clamp'
 " Plug 'mhinz/vim-signify'
 call plug#end()
 
-" FUNCTIONS = {{
-let g:python3_host_prog = '/opt/python/x86_64/3.4.1/bin/python3'
+" FUNCTIONS = {:{
+" let g:python3_host_prog = '/opt/python/x86_64/3.4.1/bin/python3'
+function! GetProjectFolderRoot()
+    return split(getcwd(), '/')[-1]
+endfunction
+
 augroup reload_vimrc " {
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
@@ -63,7 +68,7 @@ set fillchars+=vert:\
 
 "" COLORS = {{
 
-hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
+" hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
 " hi NonText ctermfg=0
 
 " }}
@@ -73,13 +78,18 @@ hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
 
 let mapleader="\<Space>"
 nnoremap ; :
+nnoremap <Leader>wv <c-w>v
+nnoremap <Leader>wh <c-w>h
+nnoremap <Leader>ww <c-w>ww
+nnoremap <Leader>wo <c-w>o
+nnoremap <Leader>wq <c-w>q
 nnoremap <silent> <Esc><Esc> :let @/=""<CR>
 " }}
 "
 
 " PLUGINS = {{
 
-"" Airline = {
+"" Plugin: Airline = {
 let g:airline_mode_map = {
       \ '__' : '-',
       \ 'n'  : 'N',
@@ -109,11 +119,11 @@ let g:airline_symbols.whitespace = 'Ξ'
 let g:airline_theme='gruvbox'
 let g:airline#extensions#whitespace#enabled=0
 let g:airline#extensions#branch#use_vcscommand=1
-let g:airline_section_y = '%{projectroot#guess()}' 
-let g:airline_section_c = "%{expand('%:t')}%m" 
+let g:airline_section_y = '' 
+let g:airline_section_c = "%{expand('%:t')}%m [%{GetProjectFolderRoot()}]" 
 "" }
 
-"" Unite = {
+"" Plugin: Unite = {
 
 "call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "call unite#filters#sorter_default#useter_length'])
@@ -157,8 +167,8 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore *.java
       \ -g "" '
 
-hi CtrlPLinePre ctermfg=8
-hi CtrlPNoEntries ctermbg=NONE
+hi CtrlPLinePre guifg=#282828 ctermbg=10
+" hi CtrlPNoEntries ctermbg=NONE
 
 "" }
 "" Plugin: Ag = {
@@ -174,11 +184,12 @@ let g:gruvbox_italicize_strings=1
 let g:cpp_class_scope_highlight=1
 let g:gruvbox_italicize_comments=1 
 "" }
+
 "" Plugin: vim-reload {
 
 let g:reload_on_write=0
-
 "" }
+
 "" Plugin:: ProjectRoot {
 function! <SID>AutoProjectRootCD()
     try
@@ -191,12 +202,36 @@ endfunction
 
 autocmd BufEnter * call <SID>AutoProjectRootCD()
 "" }
+
 "" Plugin: deoplete {
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 let g:deoplete#enable_at_startup = 1
 "" }
+
 "" Plugin: delimitMate {
 let delimitMate_expand_cr = 1
 let delimitMate_jump_expansion = 1
 "" }
+
+"" Plugin: startify {
+function! s:filter_header(lines) abort
+    let longest_line   = max(map(copy(a:lines), 'len(v:val)'))
+    let centered_lines = map(copy(a:lines),
+        \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+    echon $columns
+    return centered_lines
+endfunction
+let g:startify_change_to_dir = 0
+let g:startify_list_order = [['   Recent files'],'files']
+let g:startify_custom_header = s:filter_header([
+\' _    __    _             ',
+\'| |  / /   (_)   ____ ___ ',
+\'| | / /   / /   / __ `__ \',
+\'| |/ /   / /   / / / / / /',
+\'|___/   /_/   /_/ /_/ /_/ ',
+\'',
+\'',
+\])                          
+"" }
+
 " }}

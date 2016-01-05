@@ -1,4 +1,5 @@
 ###################
 ## Key Bindings
 ###################
+set -g default-terminal "screen-256color"
 bind r source-file ~/.tmux.conf \; display "Config reloaded"
