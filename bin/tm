@@ -1,0 +1,26 @@
+#!/bin/sh
+
+["$TMUX" == ""] || exit 0
+
+PS3="Please choose session: "
+options=($(tmux ls -F '#S') "New Session")
+echo "Sessions"
+echo "--------"
+echo " "
+select opt in "${options[@]}"
+do
+    case $opt in
+	"New Session")
+	    read -p "Enter new session name: " SESSION_NAME
+	    tmux new -s "$SESSION_NAME"
+	    break
+	    ;;
+	"zsh")
+	    zsh --login
+	    break;;
+	*)
+	    tmux attach-session -t $opt
+	    break
+	    ;;
+    esac
+done

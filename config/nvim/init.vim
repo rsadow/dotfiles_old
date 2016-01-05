@@ -51,10 +51,12 @@ au BufRead,BufNewFile *.ttcn3 setf ttcn
 
 " GENERALS = {{
 "
+set ttyfast
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set hidden
 syntax on
+set scrolloff=3
 set shiftwidth=4
 set shiftround
 set autoindent
@@ -118,7 +120,7 @@ let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 let g:airline_theme='gruvbox'
 let g:airline#extensions#whitespace#enabled=0
-let g:airline#extensions#branch#use_vcscommand=1
+let g:airline#extensions#branch#use_vcscommand=0
 let g:airline_section_y = '' 
 let g:airline_section_c = "%{expand('%:t')}%m [%{GetProjectFolderRoot()}]" 
 "" }
@@ -167,16 +169,19 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore *.java
       \ -g "" '
 
-hi CtrlPLinePre guifg=#282828 ctermbg=10
+hi CtrlPLinePre guifg=#282828 ctermbg=1
 " hi CtrlPNoEntries ctermbg=NONE
 
 "" }
+
 "" Plugin: Ag = {
 let g:ag_prg='ag --vimgrep 
     \ --ignore-dir CMakeFiles'
 nnoremap <Leader>/ :Ag <cword><CR>
 let g:ag_highlight=1
+
 "" }
+
 "" Plugin: Gruvbox {
 
 let g:gruvbox_contrast_dark="medium"
