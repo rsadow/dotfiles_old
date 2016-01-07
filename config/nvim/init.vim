@@ -42,6 +42,9 @@ Plug 'mhinz/vim-startify'
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch.vim'
 Plug 'kana/vim-vspec'
+Plug 'lfilho/cosco.vim'
+Plug 'tpope/vim-surround'
+Plug 'junegunn/vim-easy-align'
 Plug  '~/.dotfiles/nvimplugins/rsCppSyntax'
 Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
     " Plug 'bbchung/clighter'
@@ -67,7 +70,7 @@ augroup reload_vimrc " {
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
 au BufRead,BufNewFile *.ttcn3 setf ttcn
-
+au FileType ttcn set tabstop=4|set shiftwidth=4|set expandtab
 " }}
 
 " GENERALS = {{
@@ -87,6 +90,8 @@ set hidden
 syntax on
 set scrolloff=3
 set shiftwidth=4
+set tabstop=4
+set expandtab
 set shiftround
 set autoindent
 set smartindent
@@ -110,17 +115,34 @@ set fillchars+=vert:\
 
 let mapleader="\<Space>"
 nnoremap ; :
+nnoremap <Leader>; :call cosco#commaOrSemiColon()<CR> 
+
+" inoremap <silent> <Leader>; <c-o>:call cosco#commaOrSemiColon()<CR> 
 nnoremap <Leader>wv <c-w>v
-nnoremap <Leader>wh <c-w>h
+nnoremap <Leader>wh <c-w>s
 nnoremap <Leader>ww <c-w>ww
 nnoremap <Leader>wo <c-w>o
 nnoremap <Leader>wq <c-w>q
+nnoremap <Leader>wk <c-w>k
+nnoremap <Leader>wj <c-w>j
+nnoremap <Leader>wl <c-w>l
+nnoremap <Leader>wh <c-w>h
 nnoremap <silent> <Esc><Esc> :let @/=""<CR>
-vnoremap > >gv
-vnoremap < <gv
+vnoremap <Leader>[ <gv
+vnoremap <Leader>] >gv
+nnoremap <Leader>[ <<
+nnoremap <Leader>] >>
+nnoremap <Leader>o o<ESC>k
+nnoremap <Leader>O O<ESC>j
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+nnoremap <silent> ^ g^
+nnoremap <silent> $ g$
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 " }}
 "
 
