@@ -1,6 +1,15 @@
 "
 " PLUGINS
 "
+"
+let rsPlug = "~/.dotfiles/nvimplugins"
+
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+
 call plug#begin('~/.config/nvim/plugged')
 Plug 'tmux-plugins/vim-tmux'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -30,13 +39,25 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neco-vim'
 Plug 'Raimondi/delimitMate'
 Plug 'mhinz/vim-startify'
-" Plug 'bbchung/clighter'
+Plug 'easymotion/vim-easymotion'
+Plug 'haya14busa/incsearch.vim'
+Plug 'kana/vim-vspec'
+Plug  '~/.dotfiles/nvimplugins/rsCppSyntax'
+Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
+    " Plug 'bbchung/clighter'
 " Plug 'bbchung/Clamp'
 " Plug 'mhinz/vim-signify'
 call plug#end()
 
-" FUNCTIONS = {:{
+" FUNCTIONS = {{
 " let g:python3_host_prog = '/opt/python/x86_64/3.4.1/bin/python3'
+
+map <F3> :echo "hi<" . 
+    \ synIDattr(synID(line("."),col("."),1),"name") . 
+    \'> trans<' . synIDattr(synID(line("."),col("."),0),"name") . 
+    \"> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . 
+    \">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
+
 function! GetProjectFolderRoot()
     return split(getcwd(), '/')[-1]
 endfunction
@@ -51,6 +72,14 @@ au BufRead,BufNewFile *.ttcn3 setf ttcn
 
 " GENERALS = {{
 "
+set clipboard=unnamed
+syntax on
+hi link cppClassName Keyword
+syntax keyword cppClassName Number
+
+
+
+
 set ttyfast
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
@@ -62,6 +91,7 @@ set shiftround
 set autoindent
 set smartindent
 set number
+set relativenumber
 set t_Co=256
 set background=dark
 colorscheme gruvbox
@@ -86,6 +116,11 @@ nnoremap <Leader>ww <c-w>ww
 nnoremap <Leader>wo <c-w>o
 nnoremap <Leader>wq <c-w>q
 nnoremap <silent> <Esc><Esc> :let @/=""<CR>
+vnoremap > >gv
+vnoremap < <gv
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
 " }}
 "
 

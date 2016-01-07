@@ -35,10 +35,10 @@ for config in $DOTFILES/config/*; do
 	echo "Creating symlinks for $config"
 	ln -s $config $target
     fi
-    init=$config/init.sh
-    if [ -e $init ]; then
-	echo "Run init.sh in $config"
-	source $init
-    fi
+    # init=$config/init.sh
+    # if [ -e $init ]; then
+	# echo "Run init.sh in $config"
+	# source $init
+    # fi
 done
 
