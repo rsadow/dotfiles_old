@@ -1,6 +1,4 @@
-"
-" PLUGINS
-"
+" PLUGINS {{{
 "
 let rsPlug = "~/.dotfiles/nvimplugins"
 
@@ -47,13 +45,16 @@ Plug 'tpope/vim-surround'
 Plug 'junegunn/vim-easy-align'
 Plug  '~/.dotfiles/nvimplugins/rsCppSyntax'
 Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
-    " Plug 'bbchung/clighter'
+" Plug 'bbchung/clighter'
 " Plug 'bbchung/Clamp'
 " Plug 'mhinz/vim-signify'
 call plug#end()
 
-" FUNCTIONS = {{
-" let g:python3_host_prog = '/opt/python/x86_64/3.4.1/bin/python3'
+" }}}
+
+" GENERALS
+
+" FUNCTIONS {{{
 
 map <F3> :echo "hi<" . 
     \ synIDattr(synID(line("."),col("."),1),"name") . 
@@ -71,23 +72,17 @@ augroup reload_vimrc " {
 augroup END " }
 au BufRead,BufNewFile *.ttcn3 setf ttcn
 au FileType ttcn set tabstop=4|set shiftwidth=4|set expandtab
-" }}
+au FileType vim setlocal foldmethod=marker
+" }}}
 
-" GENERALS = {{
+" GENERALS {{{
 "
-set clipboard=unnamed
-syntax on
-hi link cppClassName Keyword
-syntax keyword cppClassName Number
-
-
-
-
-set ttyfast
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+set clipboard=unnamed
+set ttyfast
 set hidden
-syntax on
 set scrolloff=3
 set shiftwidth=4
 set tabstop=4
@@ -97,21 +92,25 @@ set autoindent
 set smartindent
 set number
 set relativenumber
+set fillchars+=vert:\ 
+
 set t_Co=256
 set background=dark
+syntax on
 colorscheme gruvbox
-set fillchars+=vert:\ 
-"" }}
 
-"" COLORS = {{
+"" }}}
 
+" COLORS {{{
+
+hi link cppClassName Keyword
+syntax keyword cppClassName Number
 " hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
 " hi NonText ctermfg=0
 
-" }}
+" }}}
 
-
-" KEY BINDINGS = {{
+" KEY BINDINGS = {{{
 
 let mapleader="\<Space>"
 nnoremap ; :
@@ -143,12 +142,12 @@ map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-" }}
-"
+" }}}
 
-" PLUGINS = {{
 
-"" Plugin: Airline = {
+"" PLUGINS
+
+" Plugin: Airline = {{{
 let g:airline_mode_map = {
       \ '__' : '-',
       \ 'n'  : 'N',
@@ -180,9 +179,9 @@ let g:airline#extensions#whitespace#enabled=0
 let g:airline#extensions#branch#use_vcscommand=0
 let g:airline_section_y = '' 
 let g:airline_section_c = "%{expand('%:t')}%m [%{GetProjectFolderRoot()}]" 
-"" }
+" }}}
 
-"" Plugin: Unite = {
+" Plugin: Unite = {{{
 
 "call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "call unite#filters#sorter_default#useter_length'])
@@ -201,8 +200,9 @@ let g:unite_source_rec_async_command =
     \ ['ag', '--follow', '--nocolor', '--nogroup',
     \ '--hidden', '--ignore-dir', 'bin', '-g', '']
 
-"" }
-"" Plugin: CTRLP {
+"" }}}
+
+" Plugin: CTRLP {{{
 
 nnoremap <Leader>pf :CtrlP<CR>
 nnoremap <Leader>pb :CtrlPBuffer<CR>
@@ -229,30 +229,32 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
 hi CtrlPLinePre guifg=#282828 ctermbg=1
 " hi CtrlPNoEntries ctermbg=NONE
 
-"" }
+" }}}
 
-"" Plugin: Ag = {
+" Plugin: Ag = {{{
 let g:ag_prg='ag --vimgrep 
     \ --ignore-dir CMakeFiles'
 nnoremap <Leader>/ :Ag <cword><CR>
 let g:ag_highlight=1
 
-"" }
+" }}}
 
-"" Plugin: Gruvbox {
+" Plugin: Gruvbox {{{
 
 let g:gruvbox_contrast_dark="medium"
 let g:gruvbox_italicize_strings=1
 let g:cpp_class_scope_highlight=1
 let g:gruvbox_italicize_comments=1 
-"" }
 
-"" Plugin: vim-reload {
+" }}}
+
+" Plugin: vim-reload {{{
 
 let g:reload_on_write=0
-"" }
 
-"" Plugin:: ProjectRoot {
+" }}}
+
+" Plugin: ProjectRoot {{{
 function! <SID>AutoProjectRootCD()
     try
 	if &ft != 'help'
@@ -263,19 +265,19 @@ function! <SID>AutoProjectRootCD()
 endfunction
 
 autocmd BufEnter * call <SID>AutoProjectRootCD()
-"" }
+" }}}
 
-"" Plugin: deoplete {
+" Plugin: deoplete {{{
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 let g:deoplete#enable_at_startup = 1
-"" }
+"}}}
 
-"" Plugin: delimitMate {
+" Plugin: delimitMate {{{
 let delimitMate_expand_cr = 1
 let delimitMate_jump_expansion = 1
-"" }
+" }}}
 
-"" Plugin: startify {
+" Plugin: startify {{{
 function! s:filter_header(lines) abort
     let longest_line   = max(map(copy(a:lines), 'len(v:val)'))
     let centered_lines = map(copy(a:lines),
@@ -294,6 +296,5 @@ let g:startify_custom_header = s:filter_header([
 \'',
 \'',
 \])                          
-"" }
+"" }}}
 
-" }}
