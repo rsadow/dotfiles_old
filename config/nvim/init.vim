@@ -13,7 +13,6 @@ Plug 'tmux-plugins/vim-tmux'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'bling/vim-airline'
 Plug 'tpope/vim-fugitive'
-" Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim'
 Plug 'lyuts/vim-rtags'
@@ -26,7 +25,6 @@ Plug 'morhetz/gruvbox'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'cocopon/iceberg.vim'
 Plug 'jdkanani/vim-material-theme'
-"Plug 'Valloric/YouCompleteMe'
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'altercation/vim-colors-solarized'
 Plug 'juneedahamed/vc.vim'
@@ -43,8 +41,13 @@ Plug 'kana/vim-vspec'
 Plug 'lfilho/cosco.vim'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-endwise'
+
 Plug  '~/.dotfiles/nvimplugins/rsCppSyntax'
 Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
+
+" Plug 'octol/vim-cpp-enhanced-highlight'
+" Plug 'Valloric/YouCompleteMe'
 " Plug 'bbchung/clighter'
 " Plug 'bbchung/Clamp'
 " Plug 'mhinz/vim-signify'
@@ -92,8 +95,9 @@ set autoindent
 set smartindent
 set number
 set relativenumber
-set fillchars+=vert:\ 
+set cino=N-s,g0
 
+set fillchars+=vert:\ 
 set t_Co=256
 set background=dark
 syntax on
