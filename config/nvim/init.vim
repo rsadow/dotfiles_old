@@ -46,7 +46,7 @@ Plug 'tpope/vim-endwise'
 Plug  '~/.dotfiles/nvimplugins/rsCppSyntax'
 Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
 
-" Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight'
 " Plug 'Valloric/YouCompleteMe'
 " Plug 'bbchung/clighter'
 " Plug 'bbchung/Clamp'
@@ -102,13 +102,18 @@ set t_Co=256
 set background=dark
 syntax on
 colorscheme gruvbox
-
 "" }}}
 
 " COLORS {{{
 
-hi link cppClassName Keyword
-syntax keyword cppClassName Number
+hi link cCustomFunc GruvboxBlue
+hi link cCustomclass GruvboxBlue
+hi link cppSTLfunction GruvboxBlue
+hi link Typedef GruvboxPurple
+hi link cCppString GruvboxAqua
+hi link cString GruvboxAqua
+hi VertSplit guibg=NONE
+hi LineNr guifg=#504945
 " hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
 " hi NonText ctermfg=0
 
@@ -244,12 +249,13 @@ let g:ag_highlight=1
 " }}}
 
 " Plugin: Gruvbox {{{
-
+let g:gruvbox_italic=1
 let g:gruvbox_contrast_dark="medium"
 let g:gruvbox_italicize_strings=1
 let g:cpp_class_scope_highlight=1
 let g:gruvbox_italicize_comments=1 
-
+set t_ZH=^[[3m
+set t_ZR=^[[23m
 " }}}
 
 " Plugin: vim-reload {{{
