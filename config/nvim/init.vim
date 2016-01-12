@@ -42,10 +42,11 @@ Plug 'lfilho/cosco.vim'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-endwise'
-
+Plug 'scrooloose/nerdtree'
 Plug  '~/.dotfiles/nvimplugins/rsCppSyntax'
 Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
-
+Plug 'vim-scripts/Mark'
+Plug 'vim-scripts/Quich-Filter'
 Plug 'octol/vim-cpp-enhanced-highlight'
 " Plug 'Valloric/YouCompleteMe'
 " Plug 'bbchung/clighter'
@@ -107,11 +108,12 @@ colorscheme gruvbox
 " COLORS {{{
 
 hi link cCustomFunc GruvboxBlue
-hi link cCustomclass GruvboxBlue
+hi link cCustomclass GruvboxBlueBold
 hi link cppSTLfunction GruvboxBlue
 hi link Typedef GruvboxPurple
 hi link cCppString GruvboxAqua
 hi link cString GruvboxAqua
+hi link ttcnString GruvboxAqua
 hi VertSplit guibg=NONE
 hi LineNr guifg=#504945
 " hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
@@ -233,11 +235,9 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore bin
       \ --ignore *.so*
       \ --ignore *.java
+      \ --ignore tags
       \ -g "" '
-
-hi CtrlPLinePre guifg=#282828 ctermbg=1
-" hi CtrlPNoEntries ctermbg=NONE
-
+let g:ctrlp_line_prefix = ' '
 " }}}
 
 " Plugin: Ag = {{{
@@ -308,3 +308,8 @@ let g:startify_custom_header = s:filter_header([
 \])                          
 "" }}}
 
+" Plugin:: NERDTree {{{
+let g:NERDTreeWinSize=45
+map <C-n> :NERDTreeToggle<CR>
+
+" }}}
