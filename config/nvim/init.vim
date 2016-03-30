@@ -61,6 +61,8 @@ Plug 'mhinz/vim-signify'
 call plug#end()
 " }}}
 
+
+
 " GENERALS
 
 " FUNCTIONS {{{
@@ -370,6 +372,7 @@ nnoremap <silent> <Leader><Enter> :call fzf#run({
 \ })<CR>
 
 
+nnoremap <silent> <Leader><Space> :Files<CR>
 
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -381,30 +384,40 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
+function! s:fzf_statusline()
+  " Override statusline as you like
+  highlight fzf1 ctermfg=161 ctermbg=251
+  highlight fzf2 ctermfg=23 ctermbg=251
+  highlight fzf3 ctermfg=237 ctermbg=251
+  setlocal statusline=%#fzf1#
+endfunction
+
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
 function! s:update_fzf_colors()
-  let rules =
-  \ { 'fg':      [['Normal',       'fg']],
-    \ 'bg':      [['Normal',       'bg']],
-    \ 'hl':      [['Comment',      'fg']],
-    \ 'fg+':     [['CursorColumn', 'fg'], ['Normal', 'fg']],
-    \ 'bg+':     [['CursorColumn', 'bg']],
-    \ 'hl+':     [['Statement',    'fg']],
-    \ 'info':    [['PreProc',      'fg']],
-    \ 'prompt':  [['Conditional',  'fg']],
-    \ 'pointer': [['Exception',    'fg']],
-    \ 'marker':  [['Keyword',      'fg']],
-    \ 'spinner': [['Label',        'fg']],
-    \ 'header':  [['Comment',      'fg']] }
-  let cols = []
-  for [name, pairs] in items(rules)
-    for pair in pairs
-      let code = synIDattr(synIDtrans(hlID(pair[0])), pair[1])
-      if !empty(name) && code > 0
-        call add(cols, name.':'.code)
-        break
-      endif
-    endfor
-  endfor
+  let cols = ['fg:4','fg+:12','bg:0', 'hl:3', 'hl+:11','prompt:5', 'pointer:5', 'info:4', 'marker:5', 'spinner:5', 'header:5', 'bg+:0' ]
+
+    " \ 'bg':0,
+    " \ 'hl':0,
+    " \ 'fg+':0,
+    " \ 'bg+':0,
+    " \ 'hl+':0,
+    " \ 'info':0,
+    " \ 'prompt':0,
+    " \ 'pointer':0,
+    " \ 'marker':0,
+    " \ 'spinner':0,
+    " \ 'header':0}
+  " let cols = []
+  " for [name, pairs] in items(rules)
+  "   for pair in pairs
+  "     let code = synIDattr(synIDtrans(hlID(pair[0])), pair[1])
+  "     if !empty(name)
+  "       call add(cols, name.':236')
+  "       break
+  "     endif
+  "   endfor
+  " endfor
+  " echon cols
   let s:orig_fzf_default_opts = get(s:, 'orig_fzf_default_opts', $FZF_DEFAULT_OPTS)
   let $FZF_DEFAULT_OPTS = s:orig_fzf_default_opts .
         \ empty(cols) ? '' : (' --color='.join(cols, ','))
