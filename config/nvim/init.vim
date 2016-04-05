@@ -10,23 +10,24 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 Plug 'tmux-plugins/vim-tmux'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'bling/vim-airline'
-Plug 'tpope/vim-fugitive'
-Plug 'Shougo/unite.vim'
+" Plug 'tpope/vim-fugitive'
+" Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim'
 Plug 'lyuts/vim-rtags'
 Plug 'gustafj/vim-ttcn'
 Plug 'dbakker/vim-projectroot'
-Plug 'FelikZ/ctrlp-py-matcher'
+" Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'rking/ag.vim'
 Plug 'tomtom/tcomment_vim'
-Plug 'morhetz/gruvbox'
-Plug 'kristijanhusak/vim-hybrid-material'
-Plug 'cocopon/iceberg.vim'
-Plug 'jdkanani/vim-material-theme'
+" Plug 'morhetz/gruvbox'
+Plug 'rsadow/gruvbox'
+" Plug 'kristijanhusak/vim-hybrid-material'
+" Plug 'cocopon/iceberg.vim'
+" Plug 'jdkanani/vim-material-theme'
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
 Plug 'juneedahamed/vc.vim'
 Plug 'vim-scripts/vcscommand.vim'
 Plug 'xolox/vim-misc'
@@ -35,7 +36,7 @@ Plug 'xolox/vim-reload'
 Plug 'Shougo/neco-vim'
 Plug 'Raimondi/delimitMate'
 Plug 'mhinz/vim-startify'
-Plug 'easymotion/vim-easymotion'
+" Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch.vim'
 Plug 'kana/vim-vspec'
 Plug 'lfilho/cosco.vim'
@@ -47,17 +48,18 @@ Plug 'bronson/vim-visual-star-search'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug  '~/.dotfiles/nvimplugins/rsCppSyntax'
-Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
+" Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
 " Plug 'vim-scripts/Mark'
 " Plug 'vim-scripts/Quich-Filter'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Valloric/YouCompleteMe'
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'ervandew/supertab'
 " Plug 'bbchung/clighter'
 " Plug 'bbchung/Clamp'
 Plug 'mhinz/vim-signify'
+Plug 'terryma/vim-multiple-cursors'
 call plug#end()
 " }}}
 
@@ -66,6 +68,15 @@ call plug#end()
 " GENERALS
 
 " FUNCTIONS {{{
+"
+" nmap <F3> :call <SID>SynStack()<CR>
+"
+" function! <SID>SynStack()
+"     if !exists("*synstack")
+"         return
+"     endif
+"     echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+" endfunc
 
 map <F3> :echo "hi<" . 
     \ synIDattr(synID(line("."),col("."),1),"name") . 
@@ -188,7 +199,6 @@ nmap <leader>rk <plug>(signify-prev-hunk)
 
 
 "" PLUGINS
-
 " Plugin: Airline = {{{
 let g:airline_mode_map = {
       \ '__' : '-',
@@ -223,46 +233,6 @@ let g:airline_section_y = ''
 let g:airline_section_c = "%{expand('%:t')}%m [%{GetProjectFolderRoot()}]"
 let g:airline#extensions#ycm#enabled = 1
 let g:airline#extensions#ycm#error_symbol = '•'
-" }}}
-
-" Plugin: Unite = {{{
-
-"call unite#filters#matcher_default#use(['matcher_fuzzy'])
-"call unite#filters#sorter_default#useter_length'])
-call unite#custom#profile('default', 'context', {
-    \   'start_insert': 1,
-    \   'winheight': 10,
-    \   'direction': 'botright',
-    \   'prompt': '→ ',
-    \   'prompt_direction': 'top',
-   \    'no_resize': 1,
-    \ })
-let g:unite_redraw_hold_candidates = 20000
-call unite#custom#source('file_rec/neovim', 'matchers',
-    \ ['converter_relative_word', 'matcher_fuzyy'])
-let g:unite_source_rec_async_command = 
-    \ ['ag', '--follow', '--nocolor', '--nogroup',
-    \ '--hidden', '--ignore-dir', 'bin', '-g', '']
-
-"" }}}
-
-" Plugin: CTRLP {{{
-
-nnoremap <Leader>pf :CtrlP<CR>
-nnoremap <Leader>pb :CtrlPBuffer<CR>
-nnoremap <Leader>pr :CtrlPMRUFiles<CR>
-"let g:ctrlp_lazy_update = 250
-let g:ctrlp_max_files = 60000
-let g:ctrlp_clear_cache_on_exit=0
-let g:ctrlp_custom_ignore = {
-    \ 'dir': '\v[\/]\.?(git|svn|bin)$',
-    \ 'file': '\v\.(o|zip|so|a|gz|java|py)$'
-    \}
-
-let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-      \ -g "" '
-let g:ctrlp_line_prefix = ' '
 " }}}
 
 " Plugin: Ag = {{{
@@ -335,7 +305,7 @@ let g:startify_custom_header = s:filter_header([
 
 " Plugin:: NERDTree {{{
 let g:NERDTreeWinSize=45
-map <C-n> :NERDTreeToggle<CR>
+map <C-m> :NERDTreeToggle<CR>
 
 " }}}
 
@@ -351,28 +321,48 @@ let g:ycm_error_symbol = '•'
 let g:ycm_filetype_whitelist = { 'cpp' : 1, 'ttcn': 1}
 let g:ycm_open_loclist_on_ycm_diags = 0
 let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_allow_changing_updatetime = 1
 " highlight YcmErrorSection guibg=none guifg=none gui=none
 
-function! s:buflist()
-  redir => ls
-  silent ls
-  redir END
-  return split(ls, '\n')
+function! s:SearchWordWithAg()
+    execute 'Ag' expand('<cword>')
 endfunction
 
-function! s:bufopen(e)
-  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+autocmd VimEnter * command! -nargs=* Ag
+      \ call fzf#vim#ag(<q-args>,{'down': '40%', 'options': '--prompt="Ag: " --color hl:3,hl+:11'})
+
+autocmd VimEnter * command! -nargs=? Files
+      \ call fzf#vim#files(<q-args>,{'down': '40%', 'options': '--prompt='.GetProjectFolderRoot().'/'})
+
+autocmd VimEnter * command! History
+      \ call fzf#vim#history({'down': '40%', 'options': '--prompt="History: "'})
+
+autocmd VimEnter * command! Buffers
+      \ call fzf#vim#buffers({'down': '40%', 'options': '--prompt="Buffers: "'})
+nnoremap <silent> <Leader>f :Files<CR>
+nnoremap <silent> <Leader>/ :call <sid>SearchWordWithAg()<CR>
+nnoremap <silent> <Leader>r :History<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
+
+function! s:fzf_statusline()
+    highlight fzf1 ctermfg=161 ctermbg=251
+    highlight fzf2 ctermfg=23 ctermbg=251
+    highlight fzf3 ctermfg=237 ctermbg=251
+    setlocal statusline=%#fzf1#
 endfunction
 
-nnoremap <silent> <Leader><Enter> :call fzf#run({
-\   'source':  reverse(<sid>buflist()),
-\   'sink':    function('<sid>bufopen'),
-\   'options': '+m',
-\   'down':    len(<sid>buflist()) + 2
-\ })<CR>
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
+function! s:update_fzf_colors()
+  let cols = ['fg:4','fg+:12','bg:0', 'hl:3', 'hl+:11','prompt:5', 'pointer:5', 'info:4', 'marker:5', 'spinner:5', 'header:5', 'bg+:0' ]
+  let s:orig_fzf_default_opts = get(s:, 'orig_fzf_default_opts', $FZF_DEFAULT_OPTS)
+  let $FZF_DEFAULT_OPTS = s:orig_fzf_default_opts .
+        \ empty(cols) ? '' : (' --color='.join(cols, ','))
+endfunction
 
-
-nnoremap <silent> <Leader><Space> :Files<CR>
+augroup _fzf
+  autocmd!
+  autocmd VimEnter,ColorScheme * call s:update_fzf_colors()
+augroup END
 
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -384,46 +374,3 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-function! s:fzf_statusline()
-  " Override statusline as you like
-  highlight fzf1 ctermfg=161 ctermbg=251
-  highlight fzf2 ctermfg=23 ctermbg=251
-  highlight fzf3 ctermfg=237 ctermbg=251
-  setlocal statusline=%#fzf1#
-endfunction
-
-autocmd! User FzfStatusLine call <SID>fzf_statusline()
-function! s:update_fzf_colors()
-  let cols = ['fg:4','fg+:12','bg:0', 'hl:3', 'hl+:11','prompt:5', 'pointer:5', 'info:4', 'marker:5', 'spinner:5', 'header:5', 'bg+:0' ]
-
-    " \ 'bg':0,
-    " \ 'hl':0,
-    " \ 'fg+':0,
-    " \ 'bg+':0,
-    " \ 'hl+':0,
-    " \ 'info':0,
-    " \ 'prompt':0,
-    " \ 'pointer':0,
-    " \ 'marker':0,
-    " \ 'spinner':0,
-    " \ 'header':0}
-  " let cols = []
-  " for [name, pairs] in items(rules)
-  "   for pair in pairs
-  "     let code = synIDattr(synIDtrans(hlID(pair[0])), pair[1])
-  "     if !empty(name)
-  "       call add(cols, name.':236')
-  "       break
-  "     endif
-  "   endfor
-  " endfor
-  " echon cols
-  let s:orig_fzf_default_opts = get(s:, 'orig_fzf_default_opts', $FZF_DEFAULT_OPTS)
-  let $FZF_DEFAULT_OPTS = s:orig_fzf_default_opts .
-        \ empty(cols) ? '' : (' --color='.join(cols, ','))
-endfunction
-
-augroup _fzf
-  autocmd!
-  autocmd VimEnter,ColorScheme * call s:update_fzf_colors()
-augroup END
