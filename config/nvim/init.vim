@@ -145,7 +145,7 @@ hi link shDoubleQuote GruvboxAqua
 hi link shSingleQuote GruvboxAqua
 hi link ttcnString GruvboxAqua
 hi clear SignColumn
-hi SignColumn guibg=#282828
+hi SignColumn guibg=#1d2021
 hi VertSplit guibg=NONE
 hi LineNr guifg=#504945 guibg=none
 hi SpellBad guifg=#fb4934 gui=none
@@ -244,11 +244,11 @@ let g:ag_highlight=1
 
 " Plugin: Gruvbox {{{
 let g:gruvbox_italic=1
-let g:gruvbox_contrast_dark="medium"
+let g:gruvbox_contrast_dark="hard"
 let g:gruvbox_italicize_strings=1
 let g:cpp_class_scope_highlight=1
 let g:gruvbox_italicize_comments=1 
-let g:gruvbox_sign_column='bg0'
+let g:gruvbox_sign_column="bg0"
 set t_ZH=^[[3m
 set t_ZR=^[[23m
 " }}}
