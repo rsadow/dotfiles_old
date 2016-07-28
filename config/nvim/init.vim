@@ -1,3 +1,4 @@
+"" PLUGINS
 " PLUGINS {{{
 "
 let rsPlug = "~/.dotfiles/nvimplugins"
@@ -13,8 +14,11 @@ Plug 'tmux-plugins/vim-tmux'
 " Plug 'ctrlpvim/ctrlp.vim'
 Plug 'bling/vim-airline'
 " Plug 'tpope/vim-fugitive'
-" Plug 'Shougo/unite.vim'
+Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim'
+" Plug 'rstacruz/vim-fastunite'
+" Plug 'Shougo/unite-outline'
+" Plug 'tsukkee/unite-tag'
 Plug 'lyuts/vim-rtags'
 Plug 'gustafj/vim-ttcn'
 Plug 'dbakker/vim-projectroot'
@@ -23,9 +27,6 @@ Plug 'rking/ag.vim'
 Plug 'tomtom/tcomment_vim'
 " Plug 'morhetz/gruvbox'
 Plug 'rsadow/gruvbox'
-" Plug 'kristijanhusak/vim-hybrid-material'
-" Plug 'cocopon/iceberg.vim'
-" Plug 'jdkanani/vim-material-theme'
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 " Plug 'altercation/vim-colors-solarized'
 Plug 'juneedahamed/vc.vim'
@@ -48,7 +49,7 @@ Plug 'bronson/vim-visual-star-search'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug  '~/.dotfiles/nvimplugins/rsCppSyntax'
-" Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
+Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
 " Plug 'vim-scripts/Mark'
 " Plug 'vim-scripts/Quich-Filter'
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -60,13 +61,12 @@ Plug 'ervandew/supertab'
 " Plug 'bbchung/Clamp'
 Plug 'mhinz/vim-signify'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'majutsushi/tagbar'
+Plug 'Valloric/ListToggle'
 call plug#end()
 " }}}
 
-
-
 " GENERALS
-
 " FUNCTIONS {{{
 "
 " nmap <F3> :call <SID>SynStack()<CR>
@@ -98,6 +98,9 @@ au FileType vim setlocal foldmethod=marker
 au BufEnter * sign define dummy
 au BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 au FileType text setlocal spell spelllang=en_us
+
+let g:xml_syntax_folding=1
+au FileType xml setlocal foldmethod=syntax
 
 " }}}
 "
@@ -146,11 +149,11 @@ hi link shSingleQuote GruvboxAqua
 hi link ttcnString GruvboxAqua
 hi clear SignColumn
 hi SignColumn guibg=#1d2021
-hi VertSplit guibg=NONE
+hi VertSplit guibg=#282828
 hi LineNr guifg=#504945 guibg=none
 hi SpellBad guifg=#fb4934 gui=none
 " hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
-" hi NonText ctermfg=0
+hi NonText guifg=#1d2021
 
 " }}}
 
@@ -186,19 +189,22 @@ map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 vmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-
-nnoremap <leader>r. SignifyToggle
-nnoremap <leader>rh SignifyToggleHighlight
-nnoremap <leader>rr SignifyRefresh
-nnoremap <leader>rd SignifyDebug
+nnoremap <F4> :%s/<c-r><c-w>/<c-r><c-w>/gc<c-f>$F/i
+" nnoremap <leader>r. SignifyToggle
+" nnoremap <leader>rh SignifyToggleHighlight
+" nnoremap <leader>rr SignifyRefresh
+" nnoremap <leader>rd SignifyDebug
 
 " hunk jumping
-nmap <leader>rj <plug>(signify-next-hunk)
-nmap <leader>rk <plug>(signify-prev-hunk)
+" nmap <leader>rj <plug>(signify-next-hunk)
+" nmap <leader>rk <plug>(signify-prev-hunk)
+
+nmap t[ :tnext<CR>
+nmap t] :tprevious<CR>
 " }}}
 
 
-"" PLUGINS
+"" PLUGINS CONFIGURATION
 " Plugin: Airline = {{{
 let g:airline_mode_map = {
       \ '__' : '-',
@@ -230,7 +236,7 @@ let g:airline_theme='gruvbox'
 let g:airline#extensions#whitespace#enabled=0
 let g:airline#extensions#branch#use_vcscommand=0
 let g:airline_section_y = '' 
-let g:airline_section_c = "%{expand('%:t')}%m [%{GetProjectFolderRoot()}]"
+let g:airline_section_c = "%{expand('%:t')}%m [%{GetProjectFolderRoot()}:/%{expand('%:h')}]"
 let g:airline#extensions#ycm#enabled = 1
 let g:airline#extensions#ycm#error_symbol = '•'
 " }}}
@@ -305,7 +311,7 @@ let g:startify_custom_header = s:filter_header([
 
 " Plugin:: NERDTree {{{
 let g:NERDTreeWinSize=45
-map <C-m> :NERDTreeToggle<CR>
+map <C-\> :NERDTreeToggle<CR>
 
 " }}}
 
@@ -314,33 +320,31 @@ let g:signify_disable_by_default = 1
 let g:signify_vcs_list = ['svn']
 
 " }}}
-"
 
-
+" Plugin: YCM {{{
 let g:ycm_error_symbol = '•'
-let g:ycm_filetype_whitelist = { 'cpp' : 1, 'ttcn': 1}
+let g:ycm_filetype_whitelist = { 'cpp' : 1, 'ttcn': 1, 'python': 1}
 let g:ycm_open_loclist_on_ycm_diags = 0
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_allow_changing_updatetime = 1
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 " highlight YcmErrorSection guibg=none guifg=none gui=none
+" }}}
 
-function! s:SearchWordWithAg()
-    execute 'Ag' expand('<cword>')
-endfunction
+" Plugin: UtilSnips {{{
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-autocmd VimEnter * command! -nargs=* Ag
-      \ call fzf#vim#ag(<q-args>,{'down': '40%', 'options': '--prompt="Ag: " --color hl:3,hl+:11'})
+let g:SuperTabDefaultCompletionType = '<C-n>'
+" }}}
 
-autocmd VimEnter * command! -nargs=? Files
-      \ call fzf#vim#files(<q-args>,{'down': '40%', 'options': '--prompt='.GetProjectFolderRoot().'/'})
+" Plugin: fzf {{{
 
-autocmd VimEnter * command! History
-      \ call fzf#vim#history({'down': '40%', 'options': '--prompt="History: "'})
-
-autocmd VimEnter * command! Buffers
-      \ call fzf#vim#buffers({'down': '40%', 'options': '--prompt="Buffers: "'})
 nnoremap <silent> <Leader>f :Files<CR>
 nnoremap <silent> <Leader>/ :call <sid>SearchWordWithAg()<CR>
+nnoremap <silent> <Leader>t :call <sid>SearchWordWithTags()<CR>
 nnoremap <silent> <Leader>r :History<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 
@@ -364,13 +368,33 @@ augroup _fzf
   autocmd VimEnter,ColorScheme * call s:update_fzf_colors()
 augroup END
 
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+function! s:SearchWordWithAg()
+    execute 'Ag' expand('<cword>')
+endfunction
 
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+function! s:SearchWordWithTags()
+    execute 'Tags' expand('<cword>')
+endfunction
 
+autocmd VimEnter * command! -nargs=* Ag
+      \ call fzf#vim#ag(<q-args>,{'down': '40%', 'options': '--prompt="Ag: " --color hl:3,hl+:11'})
+
+autocmd VimEnter * command! -nargs=? Files
+      \ call fzf#vim#files(<q-args>,{'down': '40%', 'options': '--prompt='.GetProjectFolderRoot().'/'})
+
+autocmd VimEnter * command! History
+      \ call fzf#vim#history({'down': '40%', 'options': '--prompt="History: "'})
+
+autocmd VimEnter * command! Buffers
+      \ call fzf#vim#buffers({'down': '40%', 'options': '--prompt="Buffers: "'})
+" }}}
+
+" Plugin: Rtags {{{ 
+
+noremap <Leader>r] :call rtags#JumpBack()<CR>
+let g:rtagsUseLocationList = 0
+"}}}
+
+let g:tagbar_left = 1
+let g:tagbar_width = 60
+let g:tagbar_vertical = 0
