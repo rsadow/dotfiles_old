@@ -11,30 +11,24 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 Plug 'tmux-plugins/vim-tmux'
-" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'bling/vim-airline'
-" Plug 'tpope/vim-fugitive'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim'
-" Plug 'rstacruz/vim-fastunite'
-" Plug 'Shougo/unite-outline'
-" Plug 'tsukkee/unite-tag'
 Plug 'lyuts/vim-rtags'
 Plug 'gustafj/vim-ttcn'
 Plug 'dbakker/vim-projectroot'
-" Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'rking/ag.vim'
 Plug 'tomtom/tcomment_vim'
 " Plug 'morhetz/gruvbox'
 Plug 'rsadow/gruvbox'
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
-" Plug 'altercation/vim-colors-solarized'
+" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'juneedahamed/vc.vim'
 Plug 'vim-scripts/vcscommand.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-reload'
-" Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neco-vim'
+" Plug 'zchee/deoplete-clang'
 Plug 'Raimondi/delimitMate'
 Plug 'mhinz/vim-startify'
 " Plug 'easymotion/vim-easymotion'
@@ -50,19 +44,17 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug  '~/.dotfiles/nvimplugins/rsCppSyntax'
 Plug  '~/.dotfiles/nvimplugins/rsProjectManager'
-" Plug 'vim-scripts/Mark'
-" Plug 'vim-scripts/Quich-Filter'
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'Valloric/YouCompleteMe'
-" Plug 'SirVer/ultisnips'
+" Plug 'Valloric/YouCompleteMe'
 Plug 'honza/vim-snippets'
 Plug 'ervandew/supertab'
-" Plug 'bbchung/clighter'
-" Plug 'bbchung/Clamp'
 Plug 'mhinz/vim-signify'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'majutsushi/tagbar'
 Plug 'Valloric/ListToggle'
+Plug 'neomake/neomake'
+Plug 'dyng/ctrlsf.vim'
+Plug 'dag/vim-fish'
 call plug#end()
 " }}}
 
@@ -98,7 +90,7 @@ au FileType vim setlocal foldmethod=marker
 au BufEnter * sign define dummy
 au BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 au FileType text setlocal spell spelllang=en_us
-
+au BufWritePost * Neomake
 let g:xml_syntax_folding=1
 au FileType xml setlocal foldmethod=syntax
 
@@ -110,7 +102,7 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[3 q"
 let &t_EI = "\<Esc>[2 q"
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 set clipboard=unnamedplus
 set ttyfast
@@ -122,16 +114,18 @@ set expandtab
 set shiftround
 set autoindent
 set smartindent
-" set number
+set number
 " set relativenumber
 set cino=N-s,g0
 set noswapfile
 set completeopt=longest,menuone
-
+set list lcs=trail:·,tab:»·
+ 
 set fillchars+=vert:\ 
 set t_Co=256
 set background=dark
 syntax on
+set termguicolors
 colorscheme gruvbox
 "" }}}
 
@@ -149,11 +143,14 @@ hi link shSingleQuote GruvboxAqua
 hi link ttcnString GruvboxAqua
 hi clear SignColumn
 hi SignColumn guibg=#1d2021
-hi VertSplit guibg=#282828
+hi VertSplit guibg=#1A1D1E
+" hi StatusLine guibg=#1A1D1E
+" hi StatusLineNC guibg=#1A1D1E guifg=#1A1D1E
 hi LineNr guifg=#504945 guibg=none
 hi SpellBad guifg=#fb4934 gui=none
 " hi CursorLine cterm=NONE ctermbg=234 ctermfg=NONE
 hi NonText guifg=#1d2021
+hi LineNr guifg=#2F3233
 
 " }}}
 
@@ -189,7 +186,8 @@ map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 vmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-nnoremap <F4> :%s/<c-r><c-w>/<c-r><c-w>/gc<c-f>$F/i
+nnoremap <F4> :%s/<c-r><c-w>/<c-r><c-w>/g
+map <F5> :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<CR>
 " nnoremap <leader>r. SignifyToggle
 " nnoremap <leader>rh SignifyToggleHighlight
 " nnoremap <leader>rr SignifyRefresh
@@ -202,7 +200,6 @@ nnoremap <F4> :%s/<c-r><c-w>/<c-r><c-w>/gc<c-f>$F/i
 nmap t[ :tnext<CR>
 nmap t] :tprevious<CR>
 " }}}
-
 
 "" PLUGINS CONFIGURATION
 " Plugin: Airline = {{{
@@ -237,8 +234,8 @@ let g:airline#extensions#whitespace#enabled=0
 let g:airline#extensions#branch#use_vcscommand=0
 let g:airline_section_y = '' 
 let g:airline_section_c = "%{expand('%:t')}%m [%{GetProjectFolderRoot()}:/%{expand('%:h')}]"
-let g:airline#extensions#ycm#enabled = 1
-let g:airline#extensions#ycm#error_symbol = '•'
+let g:airline#extensions#ycm#enabled = 0
+" let g:airline#extensions#ycm#error_symbol = '•'
 " }}}
 
 " Plugin: Ag = {{{
@@ -281,6 +278,9 @@ autocmd BufEnter * call <SID>AutoProjectRootCD()
 " Plugin: deoplete {{{
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 let g:deoplete#enable_at_startup = 1
+
+" let g:deoplete#sources#clang#libclang_path = "/home/rsadowsk/tools/clang.3.8/lib/libclang.so"
+" let g:deoplete#sources#clang#clang_header = "/home/rsadowsk/tools/clang.3.8/lib/clang"
 "}}}
 
 " Plugin: delimitMate {{{
@@ -392,9 +392,15 @@ autocmd VimEnter * command! Buffers
 " Plugin: Rtags {{{ 
 
 noremap <Leader>r] :call rtags#JumpBack()<CR>
-let g:rtagsUseLocationList = 0
+let g:rtagsUseLocationList = 1 
 "}}}
 
 let g:tagbar_left = 1
 let g:tagbar_width = 60
 let g:tagbar_vertical = 0
+
+let g:neomake_cpp_enabled_makers = ['clangtidy']
+let g:neomake_error_sign = {'text': '•', 'texthl': 'NeomakeErrorSign'}
+let g:neomake_warning_sign = {'text': '•', 'texthl': 'NeomakeWarningSign'}
+let g:neomake_message_sign = {'text': '•', 'texthl': 'NeomakeMessageSign'}
+let g:neomake_info_sign = {'text': '•', 'texthl': 'NeomakeInfoSign'}
