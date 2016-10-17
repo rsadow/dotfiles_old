@@ -1,4 +1,7 @@
 **/.netrwhist
+.-rplugin~
 config/nvim/plugged
 config/nvim/.init.vim-rplugin~
+config/nvim/autoload
+config/nvim/#init.vim#
 
